@@ -1,0 +1,182 @@
+/* Horta Inteligente — estilo base
+   Paleta: vidro de estufa (fundo mineral), tinta de folha, água e barro. */
+
+:root {
+  --fundo: #E9EDE4;
+  --painel: #F7F9F4;
+  --tinta: #1E2A22;
+  --tinta-suave: #5B6B5F;
+  --linha: #CFD8C9;
+  --folha: #33683F;
+  --agua: #1F6B87;
+  --barro: #A9532B;
+  --seco: #C2721A;
+  --raio: 14px;
+  --sombra: 0 1px 0 rgba(30, 42, 34, .06), 0 8px 24px -18px rgba(30, 42, 34, .5);
+  --fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+  --fonte-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #131A15;
+    --painel: #1B241D;
+    --tinta: #E7EDE6;
+    --tinta-suave: #9DAFA1;
+    --linha: #2C3A2F;
+    --folha: #7FBE8C;
+    --agua: #6FBEDC;
+    --barro: #E39468;
+    --seco: #E5A94F;
+    --sombra: 0 1px 0 rgba(0, 0, 0, .3), 0 8px 24px -18px #000;
+  }
+}
+
+:root[data-theme="dark"] {
+  --fundo: #131A15;
+  --painel: #1B241D;
+  --tinta: #E7EDE6;
+  --tinta-suave: #9DAFA1;
+  --linha: #2C3A2F;
+  --folha: #7FBE8C;
+  --agua: #6FBEDC;
+  --barro: #E39468;
+  --seco: #E5A94F;
+  --sombra: 0 1px 0 rgba(0, 0, 0, .3), 0 8px 24px -18px #000;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: var(--fonte-texto);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom));
+}
+
+.app { max-width: 720px; margin: 0 auto; padding: 18px 16px 8px; }
+
+h1, h2, h3 { font-family: var(--fonte-titulo); font-weight: 600; margin: 0; letter-spacing: -.01em; }
+h1 { font-size: 1.6rem; line-height: 1.15; }
+h2 { font-size: 1.22rem; }
+h3 { font-size: 1rem; }
+p { margin: .4em 0; max-width: 62ch; }
+
+.subtexto { color: var(--tinta-suave); font-size: .875rem; }
+
+/* ---------- cabeçalho ---------- */
+.topo { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.topo .marca { font-family: var(--fonte-titulo); font-size: 1.05rem; }
+.topo .marca span { color: var(--folha); }
+
+/* ---------- herói: reservatório + solo ---------- */
+.heroi {
+  background: var(--painel);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.heroi .leitura { font-family: var(--fonte-titulo); font-size: 2.6rem; line-height: 1; }
+.heroi .leitura small { font-size: 1rem; color: var(--tinta-suave); font-family: var(--fonte-texto); }
+.selo {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 999px; padding: 4px 11px; font-size: .8rem; font-weight: 500;
+  border: 1px solid currentColor;
+}
+.selo.ok { color: var(--folha); }
+.selo.atencao { color: var(--seco); }
+.selo.critico { color: var(--barro); }
+.ponto { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+.pares { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.cartao {
+  background: var(--painel);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  padding: 14px;
+}
+.cartao .valor { font-family: var(--fonte-titulo); font-size: 1.7rem; line-height: 1.1; }
+.cartao.temperatura .valor { color: var(--barro); }
+.cartao.umidade .valor { color: var(--agua); }
+
+/* ---------- formulários ---------- */
+label { display: block; font-size: .82rem; color: var(--tinta-suave); margin-bottom: 4px; }
+input, select, button, textarea { font: inherit; color: inherit; }
+input, select {
+  width: 100%;
+  background: var(--painel);
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--tinta);
+}
+input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--agua); outline-offset: 2px;
+}
+.campos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.campos .largo { grid-column: 1 / -1; }
+
+.botao {
+  background: var(--folha); color: #F7F9F4; border: 0; border-radius: 10px;
+  padding: 11px 16px; font-weight: 600; cursor: pointer;
+}
+:root[data-theme="dark"] .botao, :root:not([data-theme="light"]) .botao { color: #10180F; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .botao { color: #F7F9F4; } }
+.botao.secundario { background: transparent; color: var(--tinta); border: 1px solid var(--linha); }
+.botao:active { transform: translateY(1px); }
+
+/* ---------- segmentos de período ---------- */
+.segmentos { display: flex; gap: 6px; background: var(--painel); border: 1px solid var(--linha); border-radius: 999px; padding: 4px; }
+.segmentos button {
+  flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px;
+  font-size: .86rem; cursor: pointer; color: var(--tinta-suave);
+}
+.segmentos button[aria-pressed="true"] { background: var(--folha); color: #F7F9F4; font-weight: 600; }
+
+/* ---------- tabela de registros ---------- */
+.tabela-rolagem { overflow-x: auto; border: 1px solid var(--linha); border-radius: var(--raio); background: var(--painel); }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--linha); white-space: nowrap; font-size: .9rem; }
+th { color: var(--tinta-suave); font-weight: 500; font-size: .8rem; }
+tbody tr:last-child td { border-bottom: 0; }
+td.temp { color: var(--barro); }
+td.umid { color: var(--agua); }
+
+.vazio { padding: 28px 16px; text-align: center; color: var(--tinta-suave); }
+
+/* ---------- gráfico ---------- */
+.grafico { background: var(--painel); border: 1px solid var(--linha); border-radius: var(--raio); padding: 14px; margin-top: 12px; }
+.grafico svg { width: 100%; height: auto; display: block; }
+.legenda { display: flex; gap: 14px; font-size: .82rem; color: var(--tinta-suave); margin-top: 6px; }
+.legenda i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+
+/* ---------- navegação inferior ---------- */
+.abas {
+  position: fixed; inset: auto 0 0 0; z-index: 10;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--painel); border-top: 1px solid var(--linha);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.abas button {
+  border: 0; background: transparent; cursor: pointer;
+  display: grid; justify-items: center; gap: 3px; padding: 10px 4px 12px;
+  color: var(--tinta-suave); font-size: .72rem;
+}
+.abas button[aria-current="page"] { color: var(--folha); font-weight: 600; }
+.abas svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+
+.secao[hidden] { display: none; }
+.linha-acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.espaco { margin-top: 20px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

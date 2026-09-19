@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horta Inteligente</title>
+<meta name="description" content="Acompanhe umidade do solo, temperatura e nível do reservatório da sua horta.">
+<meta name="theme-color" content="#33683F">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icone-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+<main class="app">
+  <div class="topo">
+    <div class="marca">Horta <span>Inteligente</span></div>
+    <div class="subtexto" id="atualizado">—</div>
+  </div>
+
+  <!-- ====== Início ====== -->
+  <section class="secao" id="tela-inicio">
+    <h1>Como está o canteiro agora</h1>
+    <div class="heroi espaco">
+      <div id="tanque"></div>
+      <div>
+        <div class="leitura" id="umidade-agora">—<small> % de umidade no solo</small></div>
+        <div class="espaco" id="estado-solo"></div>
+        <p class="subtexto" id="recado">Carregando leituras dos sensores.</p>
+      </div>
+    </div>
+
+    <div class="pares">
+      <div class="cartao temperatura">
+        <div class="subtexto">Temperatura</div>
+        <div class="valor" id="temp-agora">—</div>
+      </div>
+      <div class="cartao umidade">
+        <div class="subtexto">Média de umidade hoje</div>
+        <div class="valor" id="umid-media">—</div>
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h3>Últimas 24 horas</h3>
+      <div id="mini-grafico"></div>
+      <div class="legenda">
+        <span><i style="background:var(--agua)"></i>Umidade (%)</span>
+        <span><i style="background:var(--barro)"></i>Temperatura (°C)</span>
+      </div>
+    </div>
+
+    <div class="linha-acoes">
+      <button class="botao" id="btn-tempo-real">Ligar tempo real</button>
+      <button class="botao secundario" id="btn-gerar">Gerar 30 dias de dados</button>
+    </div>
+  </section>
+
+  <!-- ====== Registros ====== -->
+  <section class="secao" id="tela-registros" hidden>
+    <h1>Registros</h1>
+    <p class="subtexto">Filtre por data e faixa de horário para conferir leitura por leitura.</p>
+
+    <div class="campos espaco">
+      <div><label for="f-de">De</label><input type="date" id="f-de"></div>
+      <div><label for="f-ate">Até</label><input type="date" id="f-ate"></div>
+      <div>
+        <label for="f-hora-de">A partir das</label>
+        <select id="f-hora-de"></select>
+      </div>
+      <div>
+        <label for="f-hora-ate">Até as</label>
+        <select id="f-hora-ate"></select>
+      </div>
+    </div>
+
+    <div class="linha-acoes">
+      <button class="botao" id="btn-filtrar">Aplicar filtro</button>
+      <button class="botao secundario" id="btn-limpar-filtro">Limpar</button>
+    </div>
+
+    <p class="subtexto espaco" id="resumo-filtro">—</p>
+
+    <div class="tabela-rolagem">
+      <table>
+        <thead>
+          <tr><th>Data</th><th>Hora</th><th>Temp. (°C)</th><th>Umidade (%)</th><th>Reserv. (%)</th></tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====== Painel ====== -->
+  <section class="secao" id="tela-painel" hidden>
+    <h1>Painel</h1>
+    <p class="subtexto">Compare o período escolhido com o período anterior de mesma duração.</p>
+
+    <div class="segmentos espaco" id="periodos" role="group" aria-label="Período de análise">
+      <button data-dias="1" aria-pressed="true">24 horas</button>
+      <button data-dias="7" aria-pressed="false">7 dias</button>
+      <button data-dias="30" aria-pressed="false">30 dias</button>
+    </div>
+
+    <div class="pares espaco" id="indicadores"></div>
+
+    <div class="grafico">
+      <h3>Umidade do solo</h3>
+      <div id="grafico-umidade"></div>
+      <div class="legenda">
+        <span><i style="background:var(--agua)"></i>Período atual</span>
+        <span><i style="background:var(--agua);opacity:.55"></i>Período anterior</span>
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h3>Temperatura</h3>
+      <div id="grafico-temperatura"></div>
+      <div class="legenda">
+        <span><i style="background:var(--barro)"></i>Período atual</span>
+        <span><i style="background:var(--barro);opacity:.55"></i>Período anterior</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Perfil ====== -->
+  <section class="secao" id="tela-perfil" hidden>
+    <h1>Perfil</h1>
+    <p class="subtexto">Usamos estes dados para identificar a horta e o endereço de instalação.</p>
+
+    <div class="campos espaco">
+      <div class="largo"><label for="p-nome">Nome</label><input id="p-nome" autocomplete="name" placeholder="Maria Silva"></div>
+      <div><label for="p-idade">Idade</label><input id="p-idade" type="number" min="0" max="120" placeholder="34"></div>
+      <div><label for="p-limite">Avisar quando a umidade cair abaixo de</label><input id="p-limite" type="number" min="5" max="90" value="30"></div>
+      <div class="largo"><label for="p-endereco">Endereço</label><input id="p-endereco" autocomplete="street-address" placeholder="Rua das Palmeiras, 120 — Saquarema, RJ"></div>
+    </div>
+
+    <div class="linha-acoes">
+      <button class="botao" id="btn-salvar-perfil">Salvar perfil</button>
+      <button class="botao secundario" id="btn-apagar-dados">Apagar leituras</button>
+    </div>
+    <p class="subtexto espaco" id="aviso-perfil"></p>
+  </section>
+</main>
+
+<nav class="abas" aria-label="Seções do app">
+  <button data-tela="inicio" aria-current="page">
+    <svg viewBox="0 0 24 24"><path d="M12 3.5 4 10v10h16V10z"/></svg>Início
+  </button>
+  <button data-tela="registros">
+    <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Registros
+  </button>
+  <button data-tela="painel">
+    <svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V8"/></svg>Painel
+  </button>
+  <button data-tela="perfil">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.4-3.6 4-5.2 7-5.2s5.6 1.6 7 5.2"/></svg>Perfil
+  </button>
+</nav>
+
+<script src="js/dados.js"></script>
+<script src="js/gerador.js"></script>
+<script src="js/grafico.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
