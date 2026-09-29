@@ -1,32 +1,49 @@
 # Horta Inteligente — MVP Mobile (PWA)
 
-App para acompanhar a umidade do solo, a temperatura e o nível do reservatório de água
-de uma horta monitorada por sensores. Feito como PWA: roda no navegador, instala na tela
-inicial do celular e funciona offline.
+#### Integrantes da Equipe
+* **Alexsandro Oliveira**
+* **Mateus Santanna**
+* **Pedro Henri**
+* **Thiago Chagas**
 
-## Estrutura
+#### Situação-Problema Escolhida
+**Horta Inteligente**: Sistema de monitoramento de horta voltado para acompanhar os níveis de umidade do solo, temperatura ambiente e volume do reservatório de água, auxiliando na gestão da irrigação.
 
+#### Descrição do MVP
+O **Horta Inteligente** é uma Progressive Web Application (PWA) desenvolvida para permitir que o usuário monitore em tempo real e analise históricos ambientais da sua horta. A aplicação roda diretamente no navegador móvel, suporta instalação na tela inicial do smartphone e funciona completamente offline.
+
+#### Tecnologias Utilizadas
+* **Front-End:** HTML5, CSS3 (CSS Variables, Flexbox, Grid) e JavaScript Vanilla.
+* **PWA & Offline:** Service Worker (`service-worker.js`) e Web App Manifest (`manifest.json`).
+* **Visualização de Dados:** Gráficos e indicadores em SVG nativo.
+* **Dados & Simulação:** `localStorage` (no cliente) e Python 3 com SQLite (`horta.db`) / CSV para geração e persistência de dados históricos.
+
+#### Elementos Fora do Escopo (Limitações do MVP)
+* Comunicação física via protocolo MQTT/HTTP direto com hardware (ESP32/Arduino).
+* Autenticação de usuário com senha e controle de acesso via servidor remoto.
+* Envio de notificações Push em segundo plano quando o aplicativo estiver fechado.
+
+#### Estrutura do Projeto
 ```
 horta/
-├── index.html              casca do app e as quatro telas
-├── manifest.json           nome, ícones e modo standalone (instalação)
-├── service-worker.js       cache offline da casca; rede primeiro para /api/
+├── index.html              # Interface e estrutura das 4 telas
+├── manifest.json           # Configuração de PWA e instalação
+├── service-worker.js       # Gerenciamento de cache offline
 ├── css/
-│   └── estilo.css          tokens de cor, tipografia, tema claro/escuro
+│   └── estilo.css          # Estilização e temas
 ├── js/
-│   ├── dados.js            camada de dados (ler, gravar, filtrar, exportar CSV)
-│   ├── gerador.js          simulação dos sensores no cliente (demonstração)
-│   ├── grafico.js          gráficos em SVG, sem biblioteca externa
-│   └── app.js              navegação, filtros, painel, tempo real
-├── icons/                  ícones 192 e 512 px
+│   ├── dados.js            # Camada de persistência local (localStorage)
+│   ├── gerador.js          # Simulador de sensores no cliente
+│   ├── grafico.js          # Renderizador de gráficos SVG
+│   └── app.js              # Controlador e navegação
 ├── scripts/
-│   └── gerador_dados.py    gera a base de dados de verdade (SQLite + CSV/Excel)
+│   └── gerador_dados.py    # Gerador de base SQLite e CSV em Python
 └── dados/
-    ├── horta.db            banco SQLite com as tabelas usuario e leitura
-    └── leituras.csv        mesma base em CSV, abre no Excel
+    ├── horta.db            # Banco SQLite com leituras
+    └── leituras.csv        # Histórico exportável em CSV
 ```
 
-## Telas
+#### Telas
 
 | Tela | O que faz |
 |---|---|
@@ -35,28 +52,22 @@ horta/
 | Painel | Indicadores de 24 h / 7 dias / 30 dias comparados com o período anterior, gráficos de umidade e temperatura. |
 | Perfil | Nome, idade, endereço e o limite de umidade que dispara o alerta. |
 
-## Como rodar
+#### Instruções de Instalação e Execução Local
 
-O service worker exige um servidor (não funciona abrindo o arquivo direto):
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/MateusSantanna/mvp-mobile-horta.git
+   cd mvp-mobile-horta\horta
+   ```
 
-```bash
-cd horta
-python3 -m http.server 8080
-# abra http://localhost:8080 no celular ou no Chrome
-```
+2. **Gere a base de dados inicial (Opcional):**
+   ```bash
+   python scripts/gerador_dados.py --dias 30            # Gera SQLite (horta.db) e CSV (leituras.csv)
+   python scripts/gerador_dados.py --dias 7 --excel     # Também gera arquivo .xlsx (requer: pip install openpyxl)
+   python scripts/gerador_dados.py --dias 30 --semente 7  # Gera dados reproduzíveis com semente aleatória
+   ```
 
-No Chrome: menu → *Instalar app*. No iPhone, Safari → *Compartilhar* → *Adicionar à Tela de Início*.
-
-## Base de dados
-
-```bash
-python3 scripts/gerador_dados.py --dias 30            # SQLite + CSV
-python3 scripts/gerador_dados.py --dias 7 --excel     # também .xlsx (pip install openpyxl)
-python3 scripts/gerador_dados.py --dias 30 --semente 7  # dados reproduzíveis
-```
-
-Esquema:
-
+**Esquema do Banco de Dados (`horta.db`):**
 ```sql
 usuario(id, nome, idade, endereco)
 leitura(id, data_hora, temperatura, umidade, reservatorio)
@@ -66,16 +77,17 @@ O modelo de simulação é o mesmo no Python e no `js/gerador.js`: temperatura m
 das 5 h e máxima às 15 h, evaporação proporcional ao calor, irrigação automática quando a
 umidade cai abaixo de 32 % e reposição do reservatório quando o nível fica crítico.
 
-## Ligando em uma API de verdade
+3. **Inicie o servidor web local (necessário para o Service Worker):**
+   ```bash
+   python -m http.server 8080
+   ```
+
+4. **Acesse no navegador ou dispositivo móvel:**
+   Abra `http://localhost:8080` no navegador.
+
+#### Ligando em uma API de verdade
 
 Toda a leitura e escrita passa por `Horta.dados`, em `js/dados.js`. Para trocar o
 armazenamento local por um backend, reimplemente `listar`, `acrescentar`, `filtrar`,
 `perfil` e `salvarPerfil` com `fetch('/api/leituras')`. O service worker já trata
 chamadas em `/api/` com estratégia rede primeiro, então nada mais precisa mudar.
-
-## Próximos passos sugeridos
-
-- Autenticação e perfil no servidor, em vez de armazenamento local.
-- Recebimento das leituras reais do ESP32/Arduino via MQTT ou HTTP.
-- Notificação push quando o reservatório chegar ao nível crítico.
-- Exportar o período filtrado em CSV direto do app.
