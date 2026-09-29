@@ -1,29 +1,29 @@
 # Horta Inteligente — MVP Mobile (PWA)
 
-#### Integrantes da Equipe
+## Integrantes da Equipe
 * **Alexsandro Oliveira**
 * **Mateus Santanna**
 * **Pedro Henri**
 * **Thiago Chagas**
 
-#### Situação-Problema Escolhida
+## Situação-Problema Escolhida
 **Horta Inteligente**: Sistema de monitoramento de horta voltado para acompanhar os níveis de umidade do solo, temperatura ambiente e volume do reservatório de água, auxiliando na gestão da irrigação.
 
-#### Descrição do MVP
+## Descrição do MVP
 O **Horta Inteligente** é uma Progressive Web Application (PWA) desenvolvida para permitir que o usuário monitore em tempo real e analise históricos ambientais da sua horta. A aplicação roda diretamente no navegador móvel, suporta instalação na tela inicial do smartphone e funciona completamente offline.
 
-#### Tecnologias Utilizadas
+## Tecnologias Utilizadas
 * **Front-End:** HTML5, CSS3 (CSS Variables, Flexbox, Grid) e JavaScript Vanilla.
 * **PWA & Offline:** Service Worker (`service-worker.js`) e Web App Manifest (`manifest.json`).
 * **Visualização de Dados:** Gráficos e indicadores em SVG nativo.
 * **Dados & Simulação:** `localStorage` (no cliente) e Python 3 com SQLite (`horta.db`) / CSV para geração e persistência de dados históricos.
 
-#### Elementos Fora do Escopo (Limitações do MVP)
+## Elementos Fora do Escopo (Limitações do MVP)
 * Comunicação física via protocolo MQTT/HTTP direto com hardware (ESP32/Arduino).
 * Autenticação de usuário com senha e controle de acesso via servidor remoto.
 * Envio de notificações Push em segundo plano quando o aplicativo estiver fechado.
 
-#### Estrutura do Projeto
+## Estrutura do Projeto
 ```
 horta/
 ├── index.html              # Interface e estrutura das 4 telas
@@ -43,7 +43,7 @@ horta/
     └── leituras.csv        # Histórico exportável em CSV
 ```
 
-#### Telas
+## Telas
 
 | Tela | O que faz |
 |---|---|
@@ -52,7 +52,7 @@ horta/
 | Painel | Indicadores de 24 h / 7 dias / 30 dias comparados com o período anterior, gráficos de umidade e temperatura. |
 | Perfil | Nome, idade, endereço e o limite de umidade que dispara o alerta. |
 
-#### Instruções de Instalação e Execução Local
+## Instruções de Instalação e Execução Local
 
 1. **Clone o repositório:**
    ```bash
@@ -85,7 +85,7 @@ umidade cai abaixo de 32 % e reposição do reservatório quando o nível fica c
 4. **Acesse no navegador ou dispositivo móvel:**
    Abra `http://localhost:8080` no navegador.
 
-#### Ligando em uma API de verdade
+## Ligando em uma API de verdade
 
 Toda a leitura e escrita passa por `Horta.dados`, em `js/dados.js`. Para trocar o
 armazenamento local por um backend, reimplemente `listar`, `acrescentar`, `filtrar`,
