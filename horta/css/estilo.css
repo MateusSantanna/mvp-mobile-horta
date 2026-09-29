@@ -132,7 +132,7 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
 }
 :root[data-theme="dark"] .botao, :root:not([data-theme="light"]) .botao { color: #10180F; }
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .botao { color: #F7F9F4; } }
-.botao.secundario { background: transparent; color: var(--tinta); border: 1px solid var(--linha); }
+.botao.secundario { background-color: rgb(127, 190, 140); color: var(--tinta); border: 1px solid var(--linha); }
 .botao:active { transform: translateY(1px); }
 
 /* ---------- segmentos de período ---------- */
