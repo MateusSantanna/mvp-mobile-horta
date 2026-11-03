@@ -63,7 +63,7 @@ Horta.grafico = (function () {
       '<rect x="11" y="' + (93 - altura).toFixed(1) + '" width="54" height="' + altura.toFixed(1) +
       '" rx="6" fill="' + cor + '" opacity=".85"/>' +
       '<rect x="24" y="4" width="28" height="9" rx="4" fill="var(--linha)"/>' +
-      '<text x="38" y="58" text-anchor="middle" font-size="18" font-weight="600" fill="var(--painel)">' + pct + '%</text>' +
+      '<text x="38" y="58" text-anchor="middle" font-size="18" font-weight="600" fill="var(--tinta)">' + pct + '%</text>' +
       '</svg>';
   }
 
